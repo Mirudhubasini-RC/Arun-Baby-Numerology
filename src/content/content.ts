@@ -3,6 +3,7 @@ import type { Lang } from '../styles/style';
 type Item = { title: string; text: string };
 
 export type Content = {
+  meta: { title: string; description: string; ogLocale: string };
   nav: {
     about: string;
     service: string;
@@ -101,6 +102,12 @@ export type Content = {
 // verified numbers and genuine client feedback before publishing.
 export const content: Record<Lang, Content> = {
   en: {
+    meta: {
+      title: 'Arun Numerology — Baby Name Numerology Consultant Since 1993',
+      description:
+        'Personal baby name numerology consultations in Tamil and English since 1993. Lucky baby names, business names, house names, wedding dates and name correction. WhatsApp +91 93429 02958.',
+      ogLocale: 'en_IN',
+    },
     nav: {
       about: 'About',
       service: 'Services',
@@ -350,6 +357,12 @@ export const content: Record<Lang, Content> = {
   },
 
   ta: {
+    meta: {
+      title: 'அருண் நியூமராலஜி — குழந்தை பெயர் எண் கணித ஆலோசகர் (1993 முதல்)',
+      description:
+        '1993 முதல் தமிழ் மற்றும் ஆங்கிலத்தில் குழந்தை பெயர் எண் கணித ஆலோசனை. அதிர்ஷ்ட குழந்தை பெயர்கள், நிறுவன பெயர்கள், வீட்டுப் பெயர்கள், திருமண தேதி மற்றும் பெயர் திருத்தம். WhatsApp +91 93429 02958.',
+      ogLocale: 'ta_IN',
+    },
     nav: {
       about: 'அறிமுகம்',
       service: 'சேவைகள்',

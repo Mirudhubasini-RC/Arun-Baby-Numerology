@@ -18,6 +18,16 @@ npm run build    # production build in dist/
 - `src/content/contact.ts` — WhatsApp number and links.
 - `src/components/sections/` — one file per page section.
 
+## SEO
+
+`npm run build` pre-renders full HTML for `/` (English) and `/ta/` (Tamil), and writes
+`robots.txt` and `sitemap.xml` (see `scripts/prerender.mjs`).
+
+Optional environment variables at build time (e.g. in Vercel → Settings → Environment Variables):
+
+- `SITE_URL` — the public address, e.g. `https://arunnumerology.com`. On Vercel the production URL is detected automatically.
+- `GOOGLE_SITE_VERIFICATION` — the code from Google Search Console's HTML-tag verification.
+
 ## Profile photo
 
 Add the professional photo as `public/images/profile.jpg` (portrait, roughly 4:5).

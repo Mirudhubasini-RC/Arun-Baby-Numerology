@@ -1,25 +1,37 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { content } from '../content/content';
+import { getLangFromPath, langPaths } from '../content/routes';
 import { createTheme, type Lang } from '../styles/style';
 import { LanguageContext } from './useLanguage';
 
-const STORAGE_KEY = 'preferred-language';
+type Props = { initialLang: Lang; children: ReactNode };
 
-const getInitialLang = (): Lang => {
-  const stored = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
-  return stored === 'ta' || stored === 'en' ? stored : 'en';
-};
+export function LanguageProvider({ initialLang, children }: Props) {
+  const [lang, setLangState] = useState<Lang>(initialLang);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>(getInitialLang);
+  useEffect(() => {
+    const onPopState = () => setLangState(getLangFromPath(window.location.pathname));
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;
-    window.localStorage.setItem(STORAGE_KEY, lang);
+    document.title = content[lang].meta.title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', content[lang].meta.description);
   }, [lang]);
 
-  const value = useMemo(() => ({ lang, setLang, t: content[lang] }), [lang]);
+  const setLang = useCallback(
+    (next: Lang) => {
+      if (next === lang) return;
+      window.history.pushState(null, '', langPaths[next] + window.location.hash);
+      setLangState(next);
+    },
+    [lang],
+  );
+
+  const value = useMemo(() => ({ lang, setLang, t: content[lang] }), [lang, setLang]);
   const theme = useMemo(() => createTheme(lang), [lang]);
 
   return (

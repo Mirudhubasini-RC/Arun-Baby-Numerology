@@ -43,7 +43,7 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
   }, []);
 
   return (
-    <Wrapper ref={ref} $visible={visible} $delay={delay} className={className}>
+    <Wrapper ref={ref} $visible={visible} $delay={delay} className={className} data-reveal="">
       {children}
     </Wrapper>
   );

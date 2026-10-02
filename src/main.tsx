@@ -1,12 +1,20 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext';
+import { getLangFromPath } from './content/routes';
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!;
+const app = (
   <StrictMode>
-    <LanguageProvider>
+    <LanguageProvider initialLang={getLangFromPath(window.location.pathname)}>
       <App />
     </LanguageProvider>
-  </StrictMode>,
+  </StrictMode>
 );
+
+if (container.firstElementChild) {
+  hydrateRoot(container, app);
+} else {
+  createRoot(container).render(app);
+}

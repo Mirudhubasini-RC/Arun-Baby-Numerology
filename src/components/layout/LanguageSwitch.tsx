@@ -1,5 +1,7 @@
+import type { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { useLanguage } from '../../context/useLanguage';
+import { langPaths } from '../../content/routes';
 import { fontFamilies, type Lang } from '../../styles/style';
 
 const Group = styled.div`
@@ -12,10 +14,11 @@ const Group = styled.div`
   background: ${({ theme }) => theme.colors.white};
 `;
 
-const Option = styled.button<{ $active: boolean; $lang: Lang }>`
+const Option = styled.a<{ $active: boolean; $lang: Lang }>`
+  display: inline-flex;
+  align-items: center;
   min-height: 28px;
   padding: 2px 12px;
-  border: 0;
   border-radius: ${({ theme }) => theme.radii.sm};
   font-family: ${({ $lang }) => fontFamilies[$lang]};
   font-size: 13.5px;
@@ -39,17 +42,25 @@ const options: { value: Lang; label: string }[] = [
 
 export function LanguageSwitch({ labelledBy }: { labelledBy?: string }) {
   const { lang, setLang } = useLanguage();
+
+  const onClick = (e: MouseEvent<HTMLAnchorElement>, next: Lang) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    setLang(next);
+  };
+
   return (
     <Group role="group" aria-labelledby={labelledBy} aria-label={labelledBy ? undefined : 'Language / மொழி'}>
       {options.map((opt) => (
         <Option
           key={opt.value}
-          type="button"
+          href={langPaths[opt.value]}
+          hrefLang={opt.value}
           lang={opt.value}
           $lang={opt.value}
           $active={lang === opt.value}
-          aria-pressed={lang === opt.value}
-          onClick={() => setLang(opt.value)}
+          aria-current={lang === opt.value ? 'page' : undefined}
+          onClick={(e) => onClick(e, opt.value)}
         >
           {opt.label}
         </Option>
