@@ -19,7 +19,7 @@ const siteUrl = (
 const { render, content, contact, langPaths } = await import(pathToFileURL(resolve(ssrDir, 'entry-server.js')).href);
 const template = await readFile(resolve(distDir, 'index.html'), 'utf8');
 
-const langs = ['ta', 'en'];
+const langs = ['en', 'ta'];
 const absolute = (path) => `${siteUrl}${path}`;
 const escapeAttr = (value) =>
   String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -80,7 +80,7 @@ function buildHead(lang) {
     `<meta name="robots" content="index, follow" />`,
     `<link rel="canonical" href="${url}" />`,
     ...langs.map((l) => `<link rel="alternate" hreflang="${l}" href="${absolute(langPaths[l])}" />`),
-    `<link rel="alternate" hreflang="x-default" href="${absolute(langPaths.ta)}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${absolute(langPaths.en)}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="${escapeAttr(t.brand.name)}" />`,
     `<meta property="og:title" content="${escapeAttr(t.meta.title)}" />`,
@@ -121,7 +121,7 @@ for (const lang of langs) {
 const today = new Date().toISOString().slice(0, 10);
 const alternates = langs
   .map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${absolute(langPaths[l])}" />`)
-  .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${absolute(langPaths.ta)}" />`)
+  .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${absolute(langPaths.en)}" />`)
   .join('\n');
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
