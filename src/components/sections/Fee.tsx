@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ChevronRight, MessageCircle, CreditCard, FileCheck2 } from 'lucide-react';
+import { ChevronRight, MessageCircle, CreditCard, FileCheck2, Wallet } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useLanguage } from '../../context/useLanguage';
 import { contact } from '../../content/contact';
@@ -38,29 +38,20 @@ const Top = styled.div`
   }
 `;
 
-const Price = styled.div`
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-  text-align: right;
+const Note = styled.p`
+  ${textStyle('small')}
+  max-width: 300px;
+  color: ${({ theme }) => theme.colors.textMuted};
 
-  strong {
-    font-size: 44px;
-    line-height: 1;
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
+  a {
     color: ${({ theme }) => theme.colors.primary};
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
-
-    ${({ theme }) => theme.media.mobile} {
-      font-size: 38px;
-    }
+    font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
-  span {
-    ${textStyle('small')}
-    color: ${({ theme }) => theme.colors.textMuted};
+  ${({ theme }) => theme.media.mobile} {
+    max-width: none;
   }
 `;
 
@@ -123,35 +114,74 @@ const Bottom = styled.div`
   }
 `;
 
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
+const Numbers = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 
   ${({ theme }) => theme.media.mobile} {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
+    grid-template-columns: 1fr;
   }
 `;
 
-const WhatsappNumber = styled.a`
-  font-size: 15px;
-  color: ${({ theme }) => theme.colors.textMuted};
+const NumberTile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md};
+  min-width: 0;
+`;
 
-  strong {
-    color: ${({ theme }) => theme.colors.text};
-    font-weight: ${({ theme }) => theme.fontWeights.semibold};
-    font-variant-numeric: tabular-nums;
-  }
+const TileIcon = styled.span<{ $tone: 'whatsapp' | 'primary' }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme, $tone }) => ($tone === 'whatsapp' ? theme.colors.whatsappSoft : theme.colors.primarySoft)};
+  color: ${({ theme, $tone }) => ($tone === 'whatsapp' ? theme.colors.whatsapp : theme.colors.primary)};
+`;
 
-  &:hover strong {
+const TileText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+`;
+
+const TileLabel = styled.span`
+  font-size: 13px;
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  color: ${({ theme }) => theme.colors.textSubtle};
+`;
+
+const TileNumber = styled.span`
+  font-size: 18px;
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  color: ${({ theme }) => theme.colors.text};
+
+  a&:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
+`;
 
+const TileHint = styled.span`
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+const Actions = styled.div`
   ${({ theme }) => theme.media.mobile} {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 `;
 
@@ -171,10 +201,9 @@ export function Fee() {
                 <Eyebrow>{fee.eyebrow}</Eyebrow>
                 <Heading2>{fee.title}</Heading2>
               </div>
-              <Price>
-                <strong>{fee.price}</strong>
-                <span>{fee.priceUnit}</span>
-              </Price>
+              <Note>
+                <a href="#service">{fee.note}</a>
+              </Note>
             </Top>
 
             <Steps>
@@ -194,14 +223,35 @@ export function Fee() {
 
             <Bottom>
               <Body style={{ maxWidth: 'none' }}>{fee.description}</Body>
+              <Numbers>
+                <NumberTile>
+                  <TileIcon $tone="whatsapp">
+                    <FaWhatsapp size={20} />
+                  </TileIcon>
+                  <TileText>
+                    <TileLabel>{fee.whatsappLabel}</TileLabel>
+                    <TileNumber as="a" href={contact.whatsappLink} target="_blank" rel="noopener noreferrer">
+                      {contact.whatsappDisplay}
+                    </TileNumber>
+                    <TileHint>{fee.whatsappHint}</TileHint>
+                  </TileText>
+                </NumberTile>
+                <NumberTile>
+                  <TileIcon $tone="primary">
+                    <Wallet size={19} strokeWidth={1.75} />
+                  </TileIcon>
+                  <TileText>
+                    <TileLabel>{fee.gpayLabel}</TileLabel>
+                    <TileNumber>{contact.gpayDisplay}</TileNumber>
+                    <TileHint>{fee.gpayHint}</TileHint>
+                  </TileText>
+                </NumberTile>
+              </Numbers>
               <Actions>
                 <Button href={contact.whatsappLink} target="_blank" rel="noopener noreferrer" $variant="whatsapp">
                   <FaWhatsapp size={19} />
                   {fee.cta}
                 </Button>
-                <WhatsappNumber href={contact.whatsappLink} target="_blank" rel="noopener noreferrer">
-                  {fee.whatsappLabel}: <strong>{contact.whatsappDisplay}</strong>
-                </WhatsappNumber>
               </Actions>
             </Bottom>
           </Card>

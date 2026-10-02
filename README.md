@@ -20,7 +20,7 @@ npm run build    # production build in dist/
 
 ## SEO
 
-`npm run build` pre-renders full HTML for `/` (English) and `/ta/` (Tamil), and writes
+`npm run build` pre-renders full HTML for `/` (Tamil, the default) and `/en/` (English), and writes
 `robots.txt` and `sitemap.xml` (see `scripts/prerender.mjs`).
 
 Optional environment variables at build time (e.g. in Vercel → Settings → Environment Variables):

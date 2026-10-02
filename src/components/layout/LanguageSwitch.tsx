@@ -33,6 +33,10 @@ const Option = styled.a<{ $active: boolean; $lang: Lang }>`
   &:hover {
     background: ${({ $active, theme }) => ($active ? theme.colors.primaryHover : theme.colors.primarySoft)};
   }
+
+  ${({ theme }) => theme.media.narrow} {
+    padding: 2px 9px;
+  }
 `;
 
 const options: { value: Lang; label: string }[] = [

@@ -1,6 +1,16 @@
 import type { Lang } from '../styles/style';
+import { contact } from './contact';
 
 type Item = { title: string; text: string };
+
+export type ServiceItem = {
+  name: string;
+  /** The service name in the other language, shown beneath the main name. */
+  altName: string;
+  text: string;
+  deliverables: string[];
+  fees: { label?: string; amount: string }[];
+};
 
 export type Content = {
   meta: { title: string; description: string; ogLocale: string };
@@ -33,7 +43,16 @@ export type Content = {
     paragraphs: string[];
     highlights: string[];
   };
-  service: { eyebrow: string; title: string; intro: string; items: (Item & { hint: string })[] };
+  service: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    deliverablesLabel: string;
+    feeLabel: string;
+    cta: string;
+    bookingMessage: string;
+    items: ServiceItem[];
+  };
   process: { eyebrow: string; title: string; intro: string; steps: Item[] };
   details: {
     eyebrow: string;
@@ -47,12 +66,14 @@ export type Content = {
   fee: {
     eyebrow: string;
     title: string;
-    price: string;
-    priceUnit: string;
+    note: string;
     steps: string[];
     description: string;
     cta: string;
     whatsappLabel: string;
+    whatsappHint: string;
+    gpayLabel: string;
+    gpayHint: string;
   };
   why: { eyebrow: string; title: string; intro: string; items: Item[] };
   experience: {
@@ -105,7 +126,7 @@ export const content: Record<Lang, Content> = {
     meta: {
       title: 'Arun Numerology — Baby Name Numerology Consultant Since 1993',
       description:
-        'Personal baby name numerology consultations in Tamil and English since 1993. Lucky baby names, business names, house names, wedding dates and name correction. WhatsApp +91 93429 02958.',
+        'Numerology consultations in Tamil and English since 1993 — born baby lucky names, pyramidology names, name correction, house and business names, marriage dates and mobile number analysis. WhatsApp +91 93429 02958.',
       ogLocale: 'en_IN',
     },
     nav: {
@@ -152,32 +173,100 @@ export const content: Record<Lang, Content> = {
     service: {
       eyebrow: 'Services',
       title: 'Our Services',
-      intro: 'Since 1993 — meaningful, lucky names and dates for every important beginning.',
+      intro: 'Since 1993 — lucky names, dates and numbers for every important beginning.',
+      deliverablesLabel: 'Key deliverables',
+      feeLabel: 'Fee',
+      cta: 'Book on WhatsApp',
+      bookingMessage: 'Hello, I would like to book this service:',
       items: [
         {
-          hint: 'New Arrival',
-          title: 'Baby Names',
-          text: 'Meaningful names based on birth date, time, place and star — with a lucky name number.',
+          name: 'Born Baby Lucky Names',
+          altName: 'பிறந்த குழந்தை அதிர்ஷ்ட பெயர்கள்',
+          text: 'Meaningful, lucky names for your newborn, based on the date, time and place of birth and the birth star.',
+          deliverables: [
+            'Birth number and star analysis',
+            'Shortlist of lucky names with meanings',
+            'Suitable starting letters',
+            'Correct English spelling',
+          ],
+          fees: [{ amount: '₹3,000' }],
         },
         {
-          hint: 'Growth & Prosperity',
-          title: 'Business & Company Names',
-          text: 'A name for your shop, company or brand, aligned with a favourable number.',
+          name: 'Pyramidology Name Selection',
+          altName: 'பிரமிடாலஜி பெயர் தேர்வு',
+          text: 'Advanced name selection that combines numerology with pyramidology for a stronger name vibration.',
+          deliverables: [
+            'Numerology and pyramidology analysis',
+            'Name vibration check',
+            'Shortlist of balanced names',
+            'Detailed explanation',
+          ],
+          fees: [{ amount: '₹5,000' }],
         },
         {
-          hint: 'Housewarming',
-          title: 'New Home Names',
-          text: 'An auspicious, fitting name for your new house.',
+          name: 'Boy / Girl Name Selection',
+          altName: 'ஆண் / பெண் குழந்தை பெயர் தேர்வு',
+          text: 'Lucky names chosen for a boy or a girl, matched to the child’s numbers and your family’s preferences.',
+          deliverables: [
+            'Separate boy and girl name lists',
+            'Name number compatibility',
+            'Meaning and origin of each name',
+            'Family preferences considered',
+          ],
+          fees: [{ amount: '₹3,000' }],
         },
         {
-          hint: 'Auspicious Start',
-          title: 'Wedding Date Selection',
-          text: 'An auspicious wedding date chosen through numerology.',
-        },
-        {
-          hint: 'Check & Correct',
-          title: 'Name Check & Correction',
+          name: 'Name Correction',
+          altName: 'பெயர் திருத்தம்',
           text: 'We check your present name. If it needs a change, we correct it into a lucky one — if it’s already good, no change.',
+          deliverables: [
+            'Current name analysis',
+            'Spelling correction if needed',
+            'Lucky name number',
+            'Clear recommendation',
+          ],
+          fees: [{ amount: '₹3,000' }],
+        },
+        {
+          name: 'Lucky House Names',
+          altName: 'அதிர்ஷ்ட வீட்டு பெயர்கள்',
+          text: 'An auspicious name for your new home, aligned with your family’s numbers.',
+          deliverables: [
+            'Family number analysis',
+            'Shortlist of house names',
+            'Meaning of each name',
+            'Spelling for the name board',
+          ],
+          fees: [{ amount: '₹3,000' }],
+        },
+        {
+          name: 'Lucky Business Names',
+          altName: 'அதிர்ஷ்ட தொழில் பெயர்கள்',
+          text: 'A lucky name for your shop, company or brand, aligned with the owner’s numbers.',
+          deliverables: [
+            'Owner number analysis',
+            'Business name shortlist',
+            'Name number check',
+            'Premium: detailed analysis with extended options',
+          ],
+          fees: [
+            { label: 'Basic', amount: '₹3,000' },
+            { label: 'Premium', amount: '₹10,000' },
+          ],
+        },
+        {
+          name: 'Marriage Date Selection',
+          altName: 'திருமண தேதி தேர்வு',
+          text: 'An auspicious wedding date chosen from the bride’s and groom’s numbers.',
+          deliverables: ['Bride and groom number analysis', 'Auspicious date options', 'Suitable timing guidance'],
+          fees: [{ amount: '₹1,500' }],
+        },
+        {
+          name: 'Mobile Number Analysis',
+          altName: 'மொபைல் எண் ஆய்வு',
+          text: 'Find out whether your mobile number is lucky for you.',
+          deliverables: ['Mobile number numerology check', 'Compatibility with your birth number', 'Lucky number suggestions'],
+          fees: [{ amount: '₹500' }],
         },
       ],
     },
@@ -222,15 +311,17 @@ export const content: Record<Lang, Content> = {
       note: 'Expecting your baby? You are welcome to reach out in advance — the analysis begins once the birth details are available.',
     },
     fee: {
-      eyebrow: 'Fee',
+      eyebrow: 'Fee & Payment',
       title: 'Consultation Fee',
-      price: '₹3,000',
-      priceUnit: 'per consultation',
-      steps: ['Speak with us', 'Make the payment', 'Get your personalised consultation'],
+      note: 'The fee for each service is listed in Our Services above.',
+      steps: ['Speak with us', 'Make the payment', 'Get your personalised service'],
       description:
-        'To get started, contact us on WhatsApp. After discussing your requirements, make the payment of ₹3,000 and send the payment screenshot on WhatsApp. Your personalised baby name consultation will then begin.',
+        'To get started, contact us on WhatsApp. After discussing your requirements, pay the fee for your chosen service by GPay and send the payment screenshot on WhatsApp. Your personalised service will then begin.',
       cta: 'Speak With Us on WhatsApp',
       whatsappLabel: 'WhatsApp',
+      whatsappHint: 'For enquiries and payment screenshots',
+      gpayLabel: 'GPay',
+      gpayHint: 'For payment only',
     },
     why: {
       eyebrow: 'Why choose us',
@@ -317,7 +408,7 @@ export const content: Record<Lang, Content> = {
         },
         {
           q: 'How do I make the payment?',
-          a: 'After an initial discussion on WhatsApp, you can make the payment of ₹3,000 and share the payment screenshot on WhatsApp. The consultation begins after that.',
+          a: `After an initial discussion on WhatsApp (${contact.whatsappDisplay}), pay the fee for your chosen service by GPay to ${contact.gpayDisplay} and share the payment screenshot on WhatsApp. Your service begins after that.`,
         },
       ],
     },
@@ -349,7 +440,7 @@ export const content: Record<Lang, Content> = {
       },
     },
     footer: {
-      about: 'Personal baby name numerology consultations in Tamil and English, for families in India and abroad.',
+      about: 'Personal numerology consultations for names, dates and numbers — in Tamil and English, for families in India and abroad.',
       linksTitle: 'Quick links',
       contactTitle: 'Contact',
       rights: 'All rights reserved.',
@@ -360,7 +451,7 @@ export const content: Record<Lang, Content> = {
     meta: {
       title: 'அருண் நியூமராலஜி — குழந்தை பெயர் எண் கணித ஆலோசகர் (1993 முதல்)',
       description:
-        '1993 முதல் தமிழ் மற்றும் ஆங்கிலத்தில் குழந்தை பெயர் எண் கணித ஆலோசனை. அதிர்ஷ்ட குழந்தை பெயர்கள், நிறுவன பெயர்கள், வீட்டுப் பெயர்கள், திருமண தேதி மற்றும் பெயர் திருத்தம். WhatsApp +91 93429 02958.',
+        '1993 முதல் தமிழ் மற்றும் ஆங்கிலத்தில் எண் கணித ஆலோசனை — பிறந்த குழந்தை அதிர்ஷ்ட பெயர்கள், பிரமிடாலஜி பெயர்கள், பெயர் திருத்தம், வீட்டு & தொழில் பெயர்கள், திருமண தேதி மற்றும் மொபைல் எண் ஆய்வு. WhatsApp +91 93429 02958.',
       ogLocale: 'ta_IN',
     },
     nav: {
@@ -407,32 +498,100 @@ export const content: Record<Lang, Content> = {
     service: {
       eyebrow: 'சேவைகள்',
       title: 'எங்கள் சேவைகள்',
-      intro: '1993 முதல் — வாழ்வின் ஒவ்வொரு முக்கியத் தொடக்கத்திற்கும் அர்த்தமுள்ள, அதிர்ஷ்ட பெயர்களும் தேதிகளும்.',
+      intro: '1993 முதல் — வாழ்வின் ஒவ்வொரு முக்கியத் தொடக்கத்திற்கும் அதிர்ஷ்ட பெயர்கள், தேதிகள் மற்றும் எண்கள்.',
+      deliverablesLabel: 'நீங்கள் பெறுவது',
+      feeLabel: 'கட்டணம்',
+      cta: 'WhatsApp-இல் முன்பதிவு',
+      bookingMessage: 'வணக்கம், இந்த சேவையை முன்பதிவு செய்ய விரும்புகிறேன்:',
       items: [
         {
-          hint: 'புதிய வரவு',
-          title: 'குழந்தை பெயர்கள்',
-          text: 'பிறந்த தேதி, நேரம், இடம், நட்சத்திரம் அடிப்படையில் — அதிர்ஷ்ட எண்ணுடன் அர்த்தமுள்ள பெயர்.',
+          name: 'பிறந்த குழந்தை அதிர்ஷ்ட பெயர்கள்',
+          altName: 'Born Baby Lucky Names',
+          text: 'பிறந்த தேதி, நேரம், இடம் மற்றும் நட்சத்திரத்தின் அடிப்படையில், உங்கள் குழந்தைக்கு அர்த்தமுள்ள அதிர்ஷ்ட பெயர்கள்.',
+          deliverables: [
+            'பிறப்பு எண் & நட்சத்திர ஆய்வு',
+            'பொருளுடன் அதிர்ஷ்ட பெயர் பட்டியல்',
+            'ஏற்ற முதல் எழுத்துகள்',
+            'சரியான ஆங்கில எழுத்துக்கூட்டல்',
+          ],
+          fees: [{ amount: '₹3,000' }],
         },
         {
-          hint: 'வளர்ச்சி & வளம்',
-          title: 'நிறுவன பெயர்கள்',
-          text: 'உங்கள் கடை, நிறுவனம் அல்லது பிராண்டுக்கு அதிர்ஷ்ட எண்ணுடன் பொருந்தும் பெயர்.',
+          name: 'பிரமிடாலஜி பெயர் தேர்வு',
+          altName: 'Pyramidology Name Selection',
+          text: 'எண் கணிதத்துடன் பிரமிடாலஜி முறையையும் இணைத்து, வலுவான அதிர்வுடைய பெயர் தேர்வு.',
+          deliverables: [
+            'எண் கணிதம் + பிரமிடாலஜி ஆய்வு',
+            'பெயர் அதிர்வு சரிபார்ப்பு',
+            'சமநிலையான பெயர் பட்டியல்',
+            'விரிவான விளக்கம்',
+          ],
+          fees: [{ amount: '₹5,000' }],
         },
         {
-          hint: 'புதுமனை புகுவிழா',
-          title: 'புதிய வீட்டிற்கான பெயர்கள்',
-          text: 'உங்கள் புதிய வீட்டிற்கு மங்களகரமான, பொருத்தமான பெயர்.',
+          name: 'ஆண் / பெண் குழந்தை பெயர் தேர்வு',
+          altName: 'Boy / Girl Name Selection',
+          text: 'ஆண் அல்லது பெண் குழந்தைக்கு, குழந்தையின் எண்களுக்கும் குடும்ப விருப்பத்திற்கும் ஏற்ற அதிர்ஷ்ட பெயர்கள்.',
+          deliverables: [
+            'ஆண் / பெண் தனித்தனி பெயர் பட்டியல்',
+            'பெயர் எண் பொருத்தம்',
+            'ஒவ்வொரு பெயரின் பொருள் & மூலம்',
+            'குடும்ப விருப்பங்களுக்கு முன்னுரிமை',
+          ],
+          fees: [{ amount: '₹3,000' }],
         },
         {
-          hint: 'சுப தொடக்கம்',
-          title: 'திருமண தேதி அமைத்தல்',
-          text: 'எண் கணிதப்படி சுபமான திருமண தேதி.',
-        },
-        {
-          hint: 'சரிபார்ப்பு & திருத்தம்',
-          title: 'பெயர் சரிபார்ப்பு & திருத்தம்',
+          name: 'பெயர் திருத்தம்',
+          altName: 'Name Correction',
           text: 'உங்கள் தற்போதைய பெயரைச் சரிபார்க்கிறோம். மாற்றம் தேவைப்பட்டால் அதிர்ஷ்ட பெயராகத் திருத்துகிறோம் — பெயர் ஏற்கனவே நன்றாக இருந்தால் மாற்றம் இல்லை.',
+          deliverables: [
+            'தற்போதைய பெயர் ஆய்வு',
+            'தேவைப்பட்டால் எழுத்துக்கூட்டல் திருத்தம்',
+            'அதிர்ஷ்ட பெயர் எண்',
+            'தெளிவான பரிந்துரை',
+          ],
+          fees: [{ amount: '₹3,000' }],
+        },
+        {
+          name: 'அதிர்ஷ்ட வீட்டு பெயர்கள்',
+          altName: 'Lucky House Names',
+          text: 'குடும்பத்தின் எண்களுக்கு ஏற்ற, உங்கள் புதிய வீட்டிற்கு மங்களகரமான பெயர்.',
+          deliverables: [
+            'குடும்ப எண் ஆய்வு',
+            'வீட்டுப் பெயர் பட்டியல்',
+            'ஒவ்வொரு பெயரின் பொருள்',
+            'பெயர் பலகைக்கான எழுத்துக்கூட்டல்',
+          ],
+          fees: [{ amount: '₹3,000' }],
+        },
+        {
+          name: 'அதிர்ஷ்ட தொழில் பெயர்கள்',
+          altName: 'Lucky Business Names',
+          text: 'உரிமையாளரின் எண்களுக்கு ஏற்ற, உங்கள் கடை, நிறுவனம் அல்லது பிராண்டுக்கு அதிர்ஷ்ட பெயர்.',
+          deliverables: [
+            'உரிமையாளர் எண் ஆய்வு',
+            'தொழில் பெயர் பட்டியல்',
+            'பெயர் எண் சரிபார்ப்பு',
+            'பிரீமியம்: விரிவான ஆய்வு & கூடுதல் தேர்வுகள்',
+          ],
+          fees: [
+            { label: 'அடிப்படை', amount: '₹3,000' },
+            { label: 'பிரீமியம்', amount: '₹10,000' },
+          ],
+        },
+        {
+          name: 'திருமண தேதி தேர்வு',
+          altName: 'Marriage Date Selection',
+          text: 'மணமகன், மணமகள் எண்களின் அடிப்படையில் சுபமான திருமண தேதி.',
+          deliverables: ['மணமக்கள் எண் ஆய்வு', 'சுப தேதி தேர்வுகள்', 'ஏற்ற நேர வழிகாட்டல்'],
+          fees: [{ amount: '₹1,500' }],
+        },
+        {
+          name: 'மொபைல் எண் ஆய்வு',
+          altName: 'Mobile Number Analysis',
+          text: 'உங்கள் மொபைல் எண் உங்களுக்கு அதிர்ஷ்டமானதா என அறியுங்கள்.',
+          deliverables: ['மொபைல் எண் ஆய்வு', 'பிறப்பு எண்ணுடன் பொருத்தம்', 'அதிர்ஷ்ட எண் பரிந்துரைகள்'],
+          fees: [{ amount: '₹500' }],
         },
       ],
     },
@@ -477,15 +636,17 @@ export const content: Record<Lang, Content> = {
       note: 'குழந்தையின் வருகையை எதிர்பார்க்கிறீர்களா? முன்கூட்டியே தொடர்பு கொள்ளலாம் — பிறப்பு விவரங்கள் கிடைத்ததும் ஆய்வு தொடங்கும்.',
     },
     fee: {
-      eyebrow: 'கட்டணம்',
+      eyebrow: 'கட்டணம் & செலுத்துதல்',
       title: 'ஆலோசனைக் கட்டணம்',
-      price: '₹3,000',
-      priceUnit: 'ஒரு ஆலோசனைக்கு',
-      steps: ['எங்களுடன் பேசுங்கள்', 'கட்டணம் செலுத்துங்கள்', 'உங்களுக்கான தனிப்பட்ட ஆலோசனையைப் பெறுங்கள்'],
+      note: 'ஒவ்வொரு சேவைக்கான கட்டணமும் மேலே உள்ள எங்கள் சேவைகள் பகுதியில் கொடுக்கப்பட்டுள்ளது.',
+      steps: ['எங்களுடன் பேசுங்கள்', 'கட்டணம் செலுத்துங்கள்', 'உங்கள் தனிப்பட்ட ஆலோசனையைப் பெறுங்கள்'],
       description:
-        'தொடங்க, WhatsApp-இல் எங்களைத் தொடர்பு கொள்ளுங்கள். உங்கள் தேவைகளைப் பற்றிக் கலந்துரையாடிய பிறகு, ₹3,000 கட்டணத்தைச் செலுத்தி, பணம் செலுத்திய ஸ்கிரீன்ஷாட்டை WhatsApp-இல் அனுப்புங்கள். அதன் பின் உங்கள் குழந்தைக்கான தனிப்பட்ட பெயர் ஆலோசனை தொடங்கும்.',
+        'தொடங்க, WhatsApp-இல் எங்களைத் தொடர்பு கொள்ளுங்கள். உங்கள் தேவைகளைப் பற்றிக் கலந்துரையாடிய பிறகு, தேர்ந்தெடுத்த சேவைக்கான கட்டணத்தை GPay மூலம் செலுத்தி, பணம் செலுத்திய ஸ்கிரீன்ஷாட்டை WhatsApp-இல் அனுப்புங்கள். அதன் பின் உங்கள் தனிப்பட்ட ஆலோசனை தொடங்கும்.',
       cta: 'WhatsApp-இல் எங்களுடன் பேசுங்கள்',
       whatsappLabel: 'WhatsApp',
+      whatsappHint: 'விசாரணை & பணம் செலுத்திய ஸ்கிரீன்ஷாட் அனுப்ப',
+      gpayLabel: 'GPay',
+      gpayHint: 'கட்டணம் செலுத்த மட்டும்',
     },
     why: {
       eyebrow: 'ஏன் எங்களை',
@@ -572,7 +733,7 @@ export const content: Record<Lang, Content> = {
         },
         {
           q: 'கட்டணத்தை எவ்வாறு செலுத்துவது?',
-          a: 'WhatsApp-இல் முதற்கட்டக் கலந்துரையாடலுக்குப் பிறகு, ₹3,000 கட்டணத்தைச் செலுத்தி, பணம் செலுத்திய ஸ்கிரீன்ஷாட்டை WhatsApp-இல் பகிருங்கள். அதன் பின் ஆலோசனை தொடங்கும்.',
+          a: `WhatsApp-இல் (${contact.whatsappDisplay}) முதற்கட்டக் கலந்துரையாடலுக்குப் பிறகு, தேர்ந்தெடுத்த சேவைக்கான கட்டணத்தை GPay மூலம் ${contact.gpayDisplay} என்ற எண்ணுக்குச் செலுத்தி, பணம் செலுத்திய ஸ்கிரீன்ஷாட்டை WhatsApp-இல் பகிருங்கள். அதன் பின் ஆலோசனை தொடங்கும்.`,
         },
       ],
     },
@@ -604,7 +765,7 @@ export const content: Record<Lang, Content> = {
       },
     },
     footer: {
-      about: 'இந்தியாவிலும் வெளிநாடுகளிலும் உள்ள குடும்பங்களுக்கு, தமிழ் மற்றும் ஆங்கிலத்தில் தனிப்பட்ட குழந்தை பெயர் எண் கணித ஆலோசனை.',
+      about: 'இந்தியாவிலும் வெளிநாடுகளிலும் உள்ள குடும்பங்களுக்கு, பெயர்கள், தேதிகள் மற்றும் எண்களுக்கான தனிப்பட்ட எண் கணித ஆலோசனை — தமிழ் மற்றும் ஆங்கிலத்தில்.',
       linksTitle: 'விரைவு இணைப்புகள்',
       contactTitle: 'தொடர்பு',
       rights: 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',

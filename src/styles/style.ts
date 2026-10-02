@@ -46,6 +46,7 @@ export const colors = {
   // WhatsApp — darkened slightly from the brand green for AA contrast
   whatsapp: '#1E9E52',
   whatsappHover: '#178644',
+  whatsappSoft: '#E8F6EE',
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -162,6 +163,7 @@ export const shadows = {
 } as const;
 
 export const breakpoints = {
+  narrow: 360,
   mobile: 640,
   tablet: 960,
   desktop: 1200,
@@ -171,6 +173,7 @@ export const breakpoints = {
 } as const;
 
 export const media = {
+  narrow: `@media (max-width: ${breakpoints.narrow}px)`,
   mobile: `@media (max-width: ${breakpoints.mobile}px)`,
   tablet: `@media (max-width: ${breakpoints.tablet}px)`,
   desktop: `@media (min-width: ${breakpoints.tablet + 1}px)`,

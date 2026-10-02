@@ -20,9 +20,10 @@ type RevealProps = {
   children: ReactNode;
   delay?: number;
   className?: string;
+  role?: string;
 };
 
-export function Reveal({ children, delay = 0, className }: RevealProps) {
+export function Reveal({ children, delay = 0, className, role }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -43,7 +44,7 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
   }, []);
 
   return (
-    <Wrapper ref={ref} $visible={visible} $delay={delay} className={className} data-reveal="">
+    <Wrapper ref={ref} $visible={visible} $delay={delay} className={className} role={role} data-reveal="">
       {children}
     </Wrapper>
   );

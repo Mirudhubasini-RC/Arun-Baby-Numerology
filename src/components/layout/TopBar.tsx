@@ -17,6 +17,11 @@ const Inner = styled(Container)`
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+
+  ${({ theme }) => theme.media.narrow} {
+    gap: 8px;
+    padding: 0 14px;
+  }
 `;
 
 const Phone = styled.a`
@@ -58,6 +63,10 @@ const Label = styled.span`
     span {
       display: none;
     }
+  }
+
+  ${({ theme }) => theme.media.narrow} {
+    display: none;
   }
 `;
 

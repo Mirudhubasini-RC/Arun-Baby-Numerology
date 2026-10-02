@@ -19,7 +19,7 @@ const siteUrl = (
 const { render, content, contact, langPaths } = await import(pathToFileURL(resolve(ssrDir, 'entry-server.js')).href);
 const template = await readFile(resolve(distDir, 'index.html'), 'utf8');
 
-const langs = ['en', 'ta'];
+const langs = ['ta', 'en'];
 const absolute = (path) => `${siteUrl}${path}`;
 const escapeAttr = (value) =>
   String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -47,14 +47,19 @@ function buildHead(lang) {
     areaServed: 'Worldwide',
     availableLanguage: ['Tamil', 'English'],
     openingHours: 'Mo-Sa 09:00-20:00',
-    priceRange: '₹3,000',
+    priceRange: '₹500 – ₹10,000',
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: t.service.title,
-      itemListElement: t.service.items.map((item) => ({
-        '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: item.title, description: item.text },
-      })),
+      itemListElement: t.service.items.flatMap((item) =>
+        item.fees.map((fee) => ({
+          '@type': 'Offer',
+          name: fee.label ? `${item.name} — ${fee.label}` : item.name,
+          price: fee.amount.replace(/[^\d]/g, ''),
+          priceCurrency: 'INR',
+          itemOffered: { '@type': 'Service', name: item.name, alternateName: item.altName, description: item.text },
+        })),
+      ),
     },
   };
 
@@ -75,7 +80,7 @@ function buildHead(lang) {
     `<meta name="robots" content="index, follow" />`,
     `<link rel="canonical" href="${url}" />`,
     ...langs.map((l) => `<link rel="alternate" hreflang="${l}" href="${absolute(langPaths[l])}" />`),
-    `<link rel="alternate" hreflang="x-default" href="${absolute(langPaths.en)}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${absolute(langPaths.ta)}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="${escapeAttr(t.brand.name)}" />`,
     `<meta property="og:title" content="${escapeAttr(t.meta.title)}" />`,
@@ -116,7 +121,7 @@ for (const lang of langs) {
 const today = new Date().toISOString().slice(0, 10);
 const alternates = langs
   .map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${absolute(langPaths[l])}" />`)
-  .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${absolute(langPaths.en)}" />`)
+  .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${absolute(langPaths.ta)}" />`)
   .join('\n');
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
